@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network & Data Communication Footer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0a0f1a;
+      color: #fff;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    /* ====== FOOTER STYLES ====== */
+    footer {
+      background: linear-gradient(135deg, #0a0f1a, #111c2d);
+      padding: 60px 20px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-container {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-title {
+      font-size: 1.4rem;
+      color: #00ccff;
+      margin-bottom: 15px;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .footer-title::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: #00ccff;
+      border-radius: 3px;
+      margin-top: 5px;
+    }
+
+    .footer-links a {
+      display: block;
+      color: #bbb;
+      text-decoration: none;
+      margin: 6px 0;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #00ccff;
+      transform: translateX(5px);
+    }
+
+    .social-icons a {
+      color: #00ccff;
+      font-size: 1.3rem;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #fff;
+      text-shadow: 0 0 10px #00ccff;
+      transform: scale(1.2);
+    }
+
+    .newsletter input {
+      width: 70%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      font-size: 0.95rem;
+      margin-right: 5px;
+    }
+
+    .newsletter button {
+      background: #00ccff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .newsletter button:hover {
+      background: #0099cc;
+      box-shadow: 0 0 10px #00ccff;
+    }
+
+    .copyright {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-top: 40px;
+      border-top: 1px solid #222;
+      padding-top: 20px;
+    }
+
+    /* Fade-up animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Light Mode */
+    body.light-mode {
+      background-color: #f4f4f4;
+      color: #111;
+    }
+    body.light-mode footer {
+      background: linear-gradient(135deg, #f4f4f4, #e2e2e2);
+      color: #111;
+    }
+    body.light-mode .footer-title {
+      color: #007acc;
+    }
+    body.light-mode .footer-links a, body.light-mode .copyright {
+      color: #333;
+    }
+    body.light-mode .social-icons a {
+      color: #007acc;
+    }
+    body.light-mode .social-icons a:hover {
+      color: #111;
+      text-shadow: 0 0 5px #007acc;
+    }
+    body.light-mode .newsletter button {
+      background: #007acc;
+    }
+    body.light-mode .newsletter button:hover {
+      background: #005f99;
+      box-shadow: 0 0 5px #007acc;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .newsletter input { width: 100%; margin-bottom: 10px; }
+      .newsletter button { width: 100%; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-container">
+      <!-- About -->
+      <div class="footer-about fade-up">
+        <h4 class="footer-title">Network & Data Communication</h4>
+        <p>We provide innovative networking, secure data transfer, and reliable communication solutions for businesses worldwide.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-links fade-up">
+        <h4 class="footer-title">Quick Links</h4>
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Projects</a>
+        <a href="#">Pricing</a>
+        <a href="#">Contact</a>
+      </div>
+
+      <!-- Services -->
+      <div class="footer-links fade-up">
+        <h4 class="footer-title">Services</h4>
+        <a href="#">Network Design</a>
+        <a href="#">Data Security</a>
+        <a href="#">Cloud Integration</a>
+        <a href="#">IoT Solutions</a>
+        <a href="#">Support</a>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="fade-up">
+        <h4 class="footer-title">Subscribe</h4>
+        <p>Get updates on networking & data solutions.</p>
+        <div class="newsletter">
+          <input type="email" id="email" placeholder="Enter your email">
+          <button id="subscribeBtn">Subscribe</button>
+        </div>
+        <p id="message" style="margin-top:5px;font-size:0.9rem;"></p>
+        <button id="modeToggle" style="margin-top:10px;padding:5px 10px;">Toggle Light/Dark Mode</button>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2025 Network & Data Communication | Designed by Mathumitha ✨
+    </div>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script>
+    // Scroll fade animation
+    const fadeElements = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.2 });
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Newsletter validation
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const emailInput = document.getElementById('email');
+    const message = document.getElementById('message');
+
+    subscribeBtn.addEventListener('click', () => {
+      const email = emailInput.value;
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(regex.test(email)) {
+        message.style.color = "limegreen";
+        message.textContent = "Thank you for subscribing!";
+        emailInput.value = '';
+      } else {
+        message.style.color = "red";
+        message.textContent = "Please enter a valid email address.";
+      }
+    });
+
+    // Light/Dark Mode toggle
+    const modeToggle = document.getElementById('modeToggle');
+    modeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+    });
+  </script>
+</body>
+</html>

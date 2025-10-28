@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Choose Us - Network & Data Communication</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<!-- AOS Animation Library -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<style>
+  /* Basic Reset */
+  * {margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif;}
+  body {background:#0a0a0a; color:#fff; line-height:1.6;}
+  section {padding:60px 20px; position:relative;}
+
+  /* Particle Background Container */
+  #particles-js {position:absolute; top:0; left:0; width:100%; height:100%; z-index:0;}
+
+  /* Header */
+  .why-choose-us h2 {text-align:center; font-size:3rem; margin-bottom:40px; z-index:1; position:relative;}
+
+  /* Feature Cards */
+  .features {
+    display:flex; flex-wrap:wrap; justify-content:center; gap:30px; z-index:1; position:relative;
+  }
+  .card {
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:15px; padding:30px; width:250px; text-align:center; transition: transform 0.3s, background 0.3s;
+  }
+  .card i {font-size:50px; margin-bottom:20px; color:#00ffea;}
+  .card h3 {margin-bottom:15px; font-size:1.5rem;}
+  .card p {font-size:0.95rem; color:#ccc;}
+  .card:hover {transform: translateY(-10px); background:rgba(0,255,234,0.1);}
+
+  /* Stats */
+  .stats {
+    display:flex; justify-content:center; gap:60px; margin-top:50px; flex-wrap:wrap; z-index:1; position:relative;
+  }
+  .counter {font-size:3rem; color:#00ffea; text-align:center;}
+  .stats p {text-align:center; margin-top:10px; font-size:1.1rem; color:#ccc;}
+
+  /* Call to Action */
+  .cta {text-align:center; margin-top:60px; z-index:1; position:relative;}
+  .cta button {
+    padding:15px 35px; font-size:1.2rem; background:#00ffea; color:#000; border:none; border-radius:50px;
+    cursor:pointer; transition: transform 0.3s, background 0.3s;
+  }
+  .cta button:hover {transform: scale(1.1); background:#00c5b8;}
+</style>
+</head>
+<body>
+
+<section class="why-choose-us">
+  <div id="particles-js"></div>
+  <h2 data-aos="fade-down">Why Choose Us?</h2>
+  
+  <div class="features">
+    <div class="card" data-aos="fade-right" data-aos-delay="100">
+      <i class="icon-speed">⚡</i>
+      <h3>High-Speed Networking</h3>
+      <p>Experience ultra-fast connectivity for all your data needs.</p>
+    </div>
+    <div class="card" data-aos="fade-up" data-aos-delay="200">
+      <i class="icon-shield">🔒</i>
+      <h3>Secure Data</h3>
+      <p>Protect your sensitive information with end-to-end security.</p>
+    </div>
+    <div class="card" data-aos="fade-left" data-aos-delay="300">
+      <i class="icon-support">🕒</i>
+      <h3>24/7 Support</h3>
+      <p>Our team is always available to solve your network issues.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div>
+      <div class="counter" data-target="500">0</div>
+      <p>Clients Served</p>
+    </div>
+    <div>
+      <div class="counter" data-target="99.9">0</div>
+      <p>Uptime %</p>
+    </div>
+    <div>
+      <div class="counter" data-target="100">0</div>
+      <p>Projects Completed</p>
+    </div>
+  </div>
+
+  <!-- <div class="cta">
+    <button data-aos="zoom-in">Get in Touch</button>
+  </div> -->
+</section>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  // Initialize AOS
+  AOS.init({duration:1000, once:true});
+
+  // Counter Animation
+  const counters = document.querySelectorAll('.counter');
+  counters.forEach(counter => {
+    const updateCount = () => {
+      const target = +counter.getAttribute('data-target');
+      const count = +counter.innerText;
+      const increment = target / 100;
+      if(count < target) {
+        counter.innerText = Math.ceil(count + increment);
+        setTimeout(updateCount, 50);
+      } else {
+        counter.innerText = target;
+      }
+    };
+    updateCount();
+  });
+
+  // ParticlesJS Config
+  particlesJS("particles-js", {
+    "particles": {
+      "number": {"value": 60, "density": {"enable": true,"value_area": 800}},
+      "color": {"value": "#00ffea"},
+      "shape": {"type": "circle"},
+      "opacity": {"value": 0.5},
+      "size": {"value": 3},
+      "line_linked": {"enable": true, "distance": 150, "color": "#00ffea", "opacity": 0.4, "width": 1},
+      "move": {"enable": true, "speed": 3}
+    },
+    "interactivity": {
+      "events": {"onhover": {"enable": true, "mode": "repulse"}}
+    },
+    "retina_detect": true
+  });
+</script>
+
+</body>
+</html>

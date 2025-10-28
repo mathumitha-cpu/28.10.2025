@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Network & Data Communication</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+           <div class="logo"> <img src="img2.png" width="43" alt="">Stackly</div>
+            <ul class="nav-links">
+                <!-- <li><a href="index.html">Home</a></li> -->
+                <!-- <li><a href="about.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <section class="contact-section">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>We'd love to hear from you! Fill out the form below and we'll get back to you shortly.</p>
+
+            <div class="contact-wrapper">
+                <!-- Contact Form -->
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" placeholder="Enter subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Write your message" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                    <p id="formMessage"></p>
+                </form>
+
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h2>Get in Touch</h2>
+                    <p><strong>Email:</strong> info@Stackly.com</p>
+                    <p><strong>Phone:</strong> +91 12345 67890</p>
+                    <p><strong>Address:</strong> 123 Network Street, Data City, India</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/"><img src="https://img.icons8.com/ios-filled/24/000000/facebook-new.png"/></a>
+                        <a href="https://x.com/"><img src="https://img.icons8.com/ios-filled/24/000000/twitter.png"/></a>
+                        <a href="https://www.linkedin.com/"><img src="https://img.icons8.com/ios-filled/24/000000/linkedin.png"/></a>
+                        <a href="https://www.instagram.com/"><img src="https://img.icons8.com/ios-filled/24/000000/instagram-new.png"/></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="map">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.123456789012!2d76.123456789012!3d10.123456789012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7abcd1234567%3A0xabcdef123456789!2sNetwork%20Center!5e0!3m2!1sen!2sin!4v1600000000000!5m2!1sen!2sin" 
+                    width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Stackly. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+header {
+    background: #5876a2;
+    padding: 15px 50px;
+    color: white;
+}
+
+header .logo {
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+header nav ul li a.active {
+    border-bottom: 2px solid #ffeb3b;
+}
+
+.contact-section {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.contact-section h1 {
+    margin-bottom: 10px;
+}
+
+.contact-section p {
+    margin-bottom: 40px;
+    color: #555;
+}
+
+.contact-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+}
+
+form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+    width: 400px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background: #0d47a1;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ffeb3b;
+    color: #0d47a1;
+}
+
+.contact-info {
+    width: 300px;
+    text-align: left;
+}
+
+.contact-info h2 {
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+}
+
+.social-links a {
+    margin-right: 10px;
+}
+
+footer {
+    background: #0d47a1;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.map {
+    margin-top: 50px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+</style>
+<script>// Form submission
+document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if(name && email && subject && message){
+        document.getElementById('formMessage').textContent = "Thank you! Your message has been sent.";
+        document.getElementById('formMessage').style.color = "green";
+
+        // Reset form
+        document.getElementById('contactForm').reset();
+    } else {
+        document.getElementById('formMessage').textContent = "Please fill out all fields.";
+        document.getElementById('formMessage').style.color = "red";
+    }
+});
+</script>

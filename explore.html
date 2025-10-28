@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Features</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Dark/Light Mode Toggle -->
+  <div class="theme-toggle">
+    <button id="toggleTheme">🌙</button>
+  </div>
+
+  <!-- Project Features Section -->
+  <section class="features" id="features">
+    <h2>Explore Our Project Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card" data-delay="0">
+        <div class="icon">⚡</div>
+        <h3>High Speed Network</h3>
+        <p>Blazing fast data transmission and network efficiency.</p>
+      </div>
+      <div class="feature-card" data-delay="100">
+        <div class="icon">🔒</div>
+        <h3>Secure Data</h3>
+        <p>All your sensitive data is protected with top-level encryption.</p>
+      </div>
+      <div class="feature-card" data-delay="200">
+        <div class="icon">☁️</div>
+        <h3>Cloud Integration</h3>
+        <p>Seamlessly integrate your network projects with cloud services.</p>
+      </div>
+      <div class="feature-card" data-delay="300">
+        <div class="icon">📊</div>
+        <h3>Real-Time Analytics</h3>
+        <p>Monitor and analyze network performance instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<style>/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Dark/Light Mode */
+body {
+  background-color: #f0f0f0;
+  color: #333;
+  transition: all 0.4s ease;
+}
+body.dark {
+  background-color: #1c1c1c;
+  color: #f0f0f0;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+.theme-toggle button {
+  padding: 10px 15px;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffce00;
+  transition: background 0.3s;
+}
+body.dark .theme-toggle button {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Features Section */
+.features {
+  padding: 80px 20px;
+  text-align: center;
+}
+.features h2 {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  position: relative;
+}
+.features h2::after {
+  content: '';
+  width: 60px;
+  height: 4px;
+  background: #ffce00;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Feature Grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+.feature-card {
+  background-color: #fff;
+  padding: 30px 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  transform: translateY(50px);
+  opacity: 0;
+}
+body.dark .feature-card {
+  background-color: #2c2c2c;
+}
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+}
+.feature-card .icon {
+  font-size: 50px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+.feature-card:hover .icon {
+  transform: rotate(20deg);
+}
+.feature-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+.feature-card p {
+  font-size: 1rem;
+  color: #555;
+}
+body.dark .feature-card p {
+  color: #ccc;
+}
+</style>
+<script>// Dark/Light Mode Toggle
+const toggleButton = document.getElementById('toggleTheme');
+toggleButton.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  toggleButton.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
+
+// Animate features on scroll
+const featureCards = document.querySelectorAll('.feature-card');
+
+function animateFeatures() {
+  const triggerBottom = window.innerHeight * 0.85;
+  featureCards.forEach(card => {
+    const cardTop = card.getBoundingClientRect().top;
+    if(cardTop < triggerBottom) {
+      setTimeout(() => {
+        card.style.transform = 'translateY(0)';
+        card.style.opacity = '1';
+      }, card.dataset.delay);
+    }
+  });
+}
+
+window.addEventListener('scroll', animateFeatures);
+window.addEventListener('load', animateFeatures);
+</script>

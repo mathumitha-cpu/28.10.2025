@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network & Data Communication Projects</title>
+    <link rel="stylesheet" href="projects.css">
+    <script src="projects.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo"> <img src="img2.png" width="45" alt="">Stackly</div>
+            <ul class="nav-links">
+                <li><a href="home2.html">Home</a></li>
+                <li><a href="projects.html" class="active">Projects</a></li>
+                <!-- <li><a href="about.html">About</a></li> -->
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Our Network & Data Communication Projects</h1>
+        <p>Explore our latest innovative projects with interactive animations and cutting-edge technologies.</p>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-section">
+        <div class="projects-container">
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="netwok img.png">
+                </div>
+                <div class="project-content">
+                    <h3>Network Security System</h3>
+                    <p>A real-time monitoring system to detect and prevent network threats.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="iot.png">
+                </div>
+                <div class="project-content">
+                    <h3>IoT Data Communication</h3>
+                    <p>Secure IoT data transfer using advanced encryption protocols.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="server.png">
+                </div>
+                <div class="project-content">
+                    <h3>Server Optimization Project</h3>
+                    <p>Optimizing server load balancing and network efficiency for large-scale systems.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="could.png" alt="Project 4">
+                </div>
+                <div class="project-content">
+                    <h3>Cloud Data Management</h3>
+                    <p>Efficient storage and retrieval of large datasets in cloud networks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Stackly. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/">Facebook</a>
+            <a href="https://x.com/">Twitter</a>
+            <a href="https://www.linkedin.com/mynetwork">LinkedIn</a>
+        </div>
+    </footer>
+</body>
+</html>
+<style>/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background: #0f2027;
+    background: linear-gradient(to right, #2c5364, #203a43, #0f2027);
+    color: #fff;
+}
+
+/* Header */
+header {
+    background: rgba(0,0,0,0.6);
+    padding: 15px 50px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+header .nav-links {
+    list-style: none;
+    display: flex;
+}
+
+header .nav-links li {
+    margin-left: 30px;
+}
+
+header .nav-links li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    position: relative;
+}
+
+header .nav-links li a.active,
+header .nav-links li a:hover {
+    color: #00f0ff;
+}
+
+header .nav-links li a::after {
+    content: '';
+    height: 2px;
+    width: 0%;
+    background: #00f0ff;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: 0.3s;
+}
+
+header .nav-links li a:hover::after {
+    width: 100%;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: slideUp 1.5s ease forwards;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #c1c1c1;
+}
+
+/* Projects */
+.projects-section {
+    padding: 50px 5%;
+}
+
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    transform: translateY(50px);
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:nth-child(1) { animation-delay: 0.2s; }
+.project-card:nth-child(2) { animation-delay: 0.4s; }
+.project-card:nth-child(3) { animation-delay: 0.6s; }
+.project-card:nth-child(4) { animation-delay: 0.8s; }
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+}
+
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-content {
+    padding: 20px;
+}
+
+.project-content h3 {
+    margin-bottom: 10px;
+    color: #00f0ff;
+}
+
+.project-content p {
+    color: #c1c1c1;
+    font-size: 15px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(0,0,0,0.7);
+    margin-top: 50px;
+}
+
+footer .social-links a {
+    margin: 0 10px;
+    color: #00f0ff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+footer .social-links a:hover {
+    color: #fff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<script>// Optional: Add scroll animation for project cards
+const cards = document.querySelectorAll('.project-card');
+
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+        }
+    });
+}, { threshold: 0.2 });
+
+cards.forEach(card => {
+    card.style.animationPlayState = 'paused';
+    observer.observe(card);
+});
+</script>

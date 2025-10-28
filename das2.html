@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Network & Data Communication Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.4s, color 0.4s;
+      background: #f5f6fa;
+      color: #222;
+      overflow-x: hidden;
+    }
+    .dark-mode {
+      background: #121212;
+      color: #f5f6fa;
+    }
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      position: fixed;
+      background: #69bae2;
+      color: #fff;
+      padding: 20px;
+      transition: all 0.4s ease;
+    }
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      padding: 12px 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .sidebar ul li:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .sidebar.active {
+      margin-left: -250px;
+    }
+    .main-content {
+      margin-left: 260px;
+      padding: 30px;
+      transition: all 0.4s ease;
+    }
+    .main-content.full {
+      margin-left: 30px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .toggle-btn {
+      border: none;
+      background: #0047ab;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .toggle-btn:hover {
+      background: #003a91;
+    }
+    .card {
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s, background 0.4s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .dark-mode .card {
+      background: #1e1e1e;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(255,255,255,0.05);
+    }
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      color: #0047ab;
+    }
+    .dark-mode .menu-toggle {
+      color: #fff;
+    }
+    /* Loading Animation */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #0047ab;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      color: #fff;
+      font-size: 24px;
+      letter-spacing: 2px;
+      font-weight: 600;
+    }
+    .dot {
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading">
+    Loading Network Data<span class="dot">...</span>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h2>NetDash</h2>
+    <ul>
+   <li> <a href="404.html"> 📊 Dashboard</a></li>
+      <li><a href="404.html">🌐 Network Status</a></li>
+      <li><a href="404.html">📶 Bandwidth</a></li>
+      <li><a href="404.html">🖥️ Devices</li></a>
+      <li><a href="404.html">📈 Reports</li></a>
+      <li><a href="404.html">⚙️ Settings</li></a>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    <div class="topbar">
+      <div class="d-flex align-items-center gap-3">
+        <span class="menu-toggle" id="menuToggle">☰</span>
+        <h3>Network & Data Communication Dashboard</h3>
+      </div>
+      <button class="toggle-btn" id="modeToggle">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card p-3 text-center">
+          <h5>Total Devices</h5>
+          <h2 class="counter" data-target="152">0</h2>
+          <small>Connected this week</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3 text-center">
+          <h5>Data Usage</h5>
+          <h2 class="counter" data-target="892">0</h2>
+          <small>Monthly usage (GB)</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3 text-center">
+          <h5>Active Sessions</h5>
+          <h2 class="counter" data-target="38">0</h2>
+          <small>Currently online</small>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card p-3 text-center">
+          <h5>Downtime</h5>
+          <h2 class="counter" data-target="1.2">0</h2>
+          <small>Last 30 days (%)</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5>Network Traffic</h5>
+          <canvas id="trafficChart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card p-3">
+          <h5>Device Distribution</h5>
+          <canvas id="deviceChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Logs -->
+    <div class="mt-5">
+      <div class="card p-4">
+        <h5>Recent Network Activities</h5>
+        <ul class="list-group list-group-flush mt-3" id="activityList">
+          <li class="list-group-item">🟢 Device 192.168.0.45 connected at 09:45 AM</li>
+          <li class="list-group-item">🔴 Server Node-2 experienced latency spike</li>
+          <li class="list-group-item">🟢 VPN Connection established from branch office</li>
+          <li class="list-group-item">🟢 New IoT device registered</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Loading screen
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading').style.display = 'none';
+      }, 1000);
+    });
+
+    // Sidebar Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('active');
+      mainContent.classList.toggle('full');
+    });
+
+    // Dark Mode Toggle
+    const toggle = document.getElementById('modeToggle');
+    toggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      toggle.textContent = document.body.classList.contains('dark-mode')
+        ? '☀️ Light Mode'
+        : '🌙 Dark Mode';
+    });
+
+    // Animated Counter
+    document.querySelectorAll('.counter').forEach(counter => {
+      counter.innerText = '0';
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        const current = +counter.innerText;
+        const increment = target / 100;
+
+        if(current < target) {
+          counter.innerText = Math.ceil(current + increment);
+          setTimeout(updateCount, 30);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
+    });
+
+    // Network Traffic Chart
+    const ctx1 = document.getElementById('trafficChart');
+    const trafficChart = new Chart(ctx1, {
+      type: 'line',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+          label: 'Data (GB)',
+          data: [120, 190, 80, 160, 220, 140, 260],
+          borderWidth: 3,
+          borderColor: '#0047ab',
+          fill: true,
+          backgroundColor: 'rgba(0, 71, 171, 0.2)'
+        }]
+      },
+      options: { responsive: true, scales: { y: { beginAtZero: true } } }
+    });
+
+    // Real-time Data Update Simulation
+    setInterval(() => {
+      trafficChart.data.datasets[0].data.shift();
+      trafficChart.data.datasets[0].data.push(Math.floor(Math.random() * 300));
+      trafficChart.update();
+    }, 3000);
+
+    // Device Chart
+    const ctx2 = document.getElementById('deviceChart');
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Routers', 'Switches', 'Servers', 'IoT Devices'],
+        datasets: [{
+          data: [25, 30, 20, 25],
+          backgroundColor: ['#0047ab', '#0096FF', '#33cc33', '#ffcc00']
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    // Auto Add Activities
+    const activityList = document.getElementById('activityList');
+    const activities = [
+      '🟢 Device 192.168.0.89 connected',
+      '🔴 Server Node-3 disconnected',
+      '🟢 Router updated firmware',
+      '🟡 Network latency spike detected'
+    ];
+
+    setInterval(() => {
+      const newItem = document.createElement('li');
+      newItem.className = 'list-group-item';
+      newItem.textContent = activities[Math.floor(Math.random() * activities.length)];
+      activityList.prepend(newItem);
+      if (activityList.children.length > 5) activityList.removeChild(activityList.lastChild);
+    }, 5000);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing — Network & Data Communication</title>
+  <style>
+    /* RESET */
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0b1020; --card:#0f1724; --muted:#9aa5b1; --accent:#20c997; --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.03); --glass-3: rgba(255,255,255,0.02);
+      --glass-border: rgba(255,255,255,0.06);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,'Helvetica Neue',Arial;
+    }
+    html,body,#app{height:100%}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(32,201,151,0.06), transparent 6%),
+                  radial-gradient(900px 400px at 90% 90%, rgba(32,201,151,0.04), transparent 6%),
+                  var(--bg);
+      color:#e6eef6; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+    }
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#2dd4bf);display:grid;place-items:center;font-weight:700;color:#052023}
+    .brand h1{font-size:18px;letter-spacing:0.2px}
+    .brand p{font-size:12px;color:var(--muted)}
+    .controls{display:flex;gap:12px;align-items:center}
+    .toggle{display:inline-flex;align-items:center;background:var(--glass);padding:6px;border-radius:999px;border:1px solid var(--glass-border);}
+    .toggle button{background:none;border:0;color:var(--muted);padding:6px 10px;border-radius:999px;cursor:pointer}
+    .toggle button.active{background:linear-gradient(90deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));color:#fff;box-shadow:0 6px 20px rgba(8,15,23,0.6)}
+
+    /* Layout */
+    .container{max-width:1200px;margin:0 auto}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
+    .intro{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:28px;border-radius:12px;border:1px solid var(--glass-border);box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .intro h2{font-size:22px;margin-bottom:10px}
+    .intro p{color:var(--muted);line-height:1.45}
+
+    /* Animated network SVG */
+    .visual{position:relative;height:300px;border-radius:12px;overflow:hidden;border:1px solid var(--glass-border);background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .nodes{position:absolute;inset:0}
+    svg{width:100%;height:100%;display:block}
+
+    /* Pricing area */
+    .pricing{margin-top:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:linear-gradient(180deg,var(--card), #0c1220);padding:20px;border-radius:14px;border:1px solid var(--glass-border);position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.2,.9,.3,1),box-shadow .35s}
+    .card:hover{transform:translateY(-10px);box-shadow:0 18px 50px rgba(2,6,23,0.6)}
+    .badge{position:absolute;right:14px;top:14px;background:linear-gradient(90deg,var(--accent),#34d399);padding:6px 10px;border-radius:999px;font-size:12px;color:#042018}
+    .plan{font-size:20px;font-weight:700}
+    .price{font-size:28px;margin:10px 0}
+    .features{color:var(--muted);font-size:14px;margin-top:10px}
+    .cta{display:inline-flex;align-items:center;gap:10px;margin-top:16px}
+    .btn{background:linear-gradient(90deg,var(--accent),#34d399);padding:10px 14px;border-radius:10px;color:#042018;border:0;cursor:pointer;font-weight:700}
+    .ghost{background:transparent;border:1px solid var(--glass-border);padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+    /* Price highlight */
+    .popular{border:1px solid rgba(46,166,136,0.18);box-shadow:0 12px 30px rgba(15,45,37,0.24)}
+
+    /* Toggle switch */
+    .switch{display:flex;align-items:center;gap:8px;margin:8px 0}
+    .switch input{display:none}
+    .switch-label{cursor:pointer;background:var(--glass-3);padding:6px;border-radius:999px;border:1px solid var(--glass-border);display:inline-flex}
+    .switch-dot{width:34px;height:28px;background:linear-gradient(180deg,#071018,#0d1b22);border-radius:999px;display:grid;place-items:center;color:var(--muted);font-size:12px}
+
+    /* Stats row */
+    .stats{display:flex;gap:14px;margin-top:16px}
+    .stat{background:var(--glass-2);padding:10px;border-radius:10px;border:1px solid var(--glass-border);font-size:13px;color:var(--muted)}
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr}
+      .pricing{grid-template-columns:1fr}
+      .visual{height:240px}
+    }
+
+    /* Subtle animated accents */
+    .pulse{position:absolute;right:-70px;top:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(32,201,151,0.12), transparent 30%);filter:blur(24px);animation:float 6s ease-in-out infinite}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+
+    /* network line glow animation */
+    .line{stroke-dasharray:6 6;stroke-linecap:round;opacity:0.9;animation:dash 6s linear infinite}
+    @keyframes dash{to{stroke-dashoffset:24}}
+
+    /* little node shimmer */
+    .node{transform-origin:center;animation:shimmer 3s ease-in-out infinite}
+    .node:nth-child(2){animation-delay:.6s}
+    .node:nth-child(3){animation-delay:1.2s}
+    @keyframes shimmer{50%{transform:scale(1.25)}100%{transform:scale(1)}}
+
+    /* small utilities */
+    .muted{color:var(--muted)}
+    footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
+
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <header>
+      <div class="brand">
+        <div class="log"> <img src="img2.png" width="43" alt=""> <h2>Stackly</h2></div>
+        <div>
+          <h1>Network & Data — Pricing</h1>
+          <p class="muted">Scalable, secure connectivity plans for teams & enterprises</p>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="toggle" role="tablist" aria-label="billing">
+          <button id="monthlyBtn" class="active">Monthly</button>
+          <button id="yearlyBtn">Yearly</button>
+        </div>
+        <div class="toggle" style="padding:6px 10px">
+          <button class="ghost" id="themeBtn">Toggle theme</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="intro">
+        <h2>Choose the right plan for your network</h2>
+        <p>Optimised for low-latency, high-throughput data transfer, our plans include SLAs, DDoS protection, and 24/7 network ops. Use the toggle to compare monthly vs yearly billing.</p>
+        <div class="stats">
+          <div class="stat">99.99% uptime SLA</div>
+          <div class="stat">24/7 NOC Support</div>
+          <div class="stat">DDoS Mitigation</div>
+        </div>
+
+        <div style="margin-top:16px">
+          <label class="switch">
+            <div class="switch-label" id="transferLabel">
+              <div class="switch-dot">GB</div>
+            </div>
+            <div class="muted" style="margin-left:10px;font-size:13px">Data transfer unit</div>
+          </label>
+        </div>
+
+        <div class="pricing" id="pricingArea" style="margin-top:18px">
+          <!-- Starter -->
+          <div class="card">
+            <div class="plan">Starter</div>
+            <div class="price"><span class="amount" data-month="19" data-year="190">$19</span><span class="muted">/mo</span></div>
+            <div class="features">
+              <div>Up to 5 sites</div>
+              <div>1 TB transfer</div>
+              <div>Basic monitoring</div>
+            </div>
+            <div class="cta">
+             <a href="404.html"> <button class="btn">Get started</button></a>
+              <!-- <button class="ghost">Contact sales</button> -->
+            </div>
+          </div>
+
+          <!-- Professional -->
+          <div class="card popular">
+            <div class="badge">Most used</div>
+            <div class="plan">Professional</div>
+            <div class="price"><span class="amount" data-month="59" data-year="590">$59</span><span class="muted">/mo</span></div>
+            <div class="features">
+              <div>Up to 50 sites</div>
+              <div>10 TB transfer</div>
+              <div>Advanced monitoring </div>
+            </div>
+            <div class="cta">
+            <a href="404.html">  <button class="btn">Start free trial</button></a>
+              <!-- <button class="ghost">Talk to an expert</button> -->
+            </div>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="card">
+            <div class="plan">Enterprise</div>
+            <div class="price"><span class="amount" data-month="199" data-year="1990">$199</span><span class="muted">/mo</span></div>
+            <div class="features">
+              <div>Unlimited sites</div>
+              <div>Custom SLAs</div>
+              <div>Dedicated account manager</div>
+            </div>
+            <div class="cta">
+             <a href="404.html"><button class="btn">Contact sales</button></a>
+              <!-- <button class="ghost">Request demo</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="visual">
+        <div class="pulse"></div>
+        <div class="nodes">
+          <!-- SVG network illustration -->
+          <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <!-- Lines -->
+            <g stroke="rgba(255,255,255,0.06)" stroke-width="1.2" fill="none">
+              <line class="line" x1="120" y1="120" x2="300" y2="80" stroke="rgba(160,230,210,0.06)"/>
+              <line class="line" x1="300" y1="80" x2="520" y2="130" stroke="rgba(160,230,210,0.05)"/>
+              <line class="line" x1="120" y1="120" x2="220" y2="280" stroke="rgba(160,230,210,0.04)"/>
+              <line class="line" x1="220" y1="280" x2="520" y2="130" stroke="rgba(160,230,210,0.04)"/>
+            </g>
+
+            <!-- Nodes -->
+            <g fill="white">
+              <g transform="translate(120,120)">
+                <circle class="node" r="6" fill="white" opacity="0.95"></circle>
+              </g>
+              <g transform="translate(300,80)">
+                <circle class="node" r="8" fill="white" opacity="0.95"></circle>
+              </g>
+              <g transform="translate(520,130)">
+                <circle class="node" r="5" fill="white" opacity="0.95"></circle>
+              </g>
+              <g transform="translate(220,280)">
+                <circle class="node" r="7" fill="white" opacity="0.95"></circle>
+              </g>
+            </g>
+
+            <!-- Animated ping ripples -->
+            <g opacity="0.12">
+              <circle cx="300" cy="80" r="14">
+                <animate attributeName="r" values="8;28" dur="2.8s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.6;0" dur="2.8s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="220" cy="280" r="10">
+                <animate attributeName="r" values="6;30" dur="3.2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.5;0" dur="3.2s" repeatCount="indefinite"/>
+              </circle>
+            </g>
+
+          </svg>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <div class="muted">Questions? Email <strong>stackly@networkdata.example</strong> • © <span id="year"></span> Network & Data Communication</div>
+    </footer>
+  </div>
+
+  <script>
+    // initial year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Billing toggle logic
+    const monthlyBtn = document.getElementById('monthlyBtn');
+    const yearlyBtn = document.getElementById('yearlyBtn');
+    const amounts = document.querySelectorAll('.amount');
+
+    function setBilling(mode){
+      monthlyBtn.classList.toggle('active', mode === 'month');
+      yearlyBtn.classList.toggle('active', mode === 'year');
+      amounts.forEach(a => {
+        const m = a.dataset.month;
+        const y = a.dataset.year;
+        a.textContent = '$' + (mode === 'month' ? m : y);
+      });
+    }
+    monthlyBtn.addEventListener('click',()=>setBilling('month'));
+    yearlyBtn.addEventListener('click',()=>setBilling('year'));
+
+    // Theme toggle (light-ish) — simple inversion of palette for demo
+    const themeBtn = document.getElementById('themeBtn');
+    let light=false;
+    themeBtn.addEventListener('click', ()=>{
+      light = !light;
+      if(light){
+        document.documentElement.style.setProperty('--bg','#f6fbfb');
+        document.documentElement.style.setProperty('--card','#ffffff');
+        document.documentElement.style.setProperty('--muted','#5b6b72');
+        document.documentElement.style.setProperty('--glass','rgba(2,6,23,0.03)');
+        document.documentElement.style.setProperty('--glass-2','rgba(2,6,23,0.03)');
+        document.documentElement.style.setProperty('--glass-3','rgba(2,6,23,0.02)');
+        document.documentElement.style.setProperty('--glass-border','rgba(2,6,23,0.06)');
+        document.documentElement.style.setProperty('--accent','#0ea5a3');
+        document.body.style.color='#072228';
+      } else {
+        // revert to defaults
+        document.documentElement.style.removeProperty('--bg');
+        document.documentElement.style.removeProperty('--card');
+        document.documentElement.style.removeProperty('--muted');
+        document.documentElement.style.removeProperty('--glass');
+        document.documentElement.style.removeProperty('--glass-2');
+        document.documentElement.style.removeProperty('--glass-3');
+        document.documentElement.style.removeProperty('--glass-border');
+        document.documentElement.style.removeProperty('--accent');
+        document.body.style.color='';
+      }
+    });
+
+    // Accessibility: keyboard toggle
+    monthlyBtn.addEventListener('keydown', e=>{ if(e.key==='Enter') setBilling('month') });
+    yearlyBtn.addEventListener('keydown', e=>{ if(e.key==='Enter') setBilling('year') });
+
+    // small entrance animation
+    window.addEventListener('load', ()=>{
+      document.querySelectorAll('.card').forEach((c,i)=>{
+        c.style.opacity=0; c.style.transform='translateY(20px)';
+        setTimeout(()=>{ c.style.transition='opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1)'; c.style.opacity=1; c.style.transform='translateY(0)'; }, 120*i)
+      });
+    });
+
+  </script>
+</body>
+</html>

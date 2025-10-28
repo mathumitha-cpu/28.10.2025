@@ -1,0 +1,496 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stackly — Auth (Signup · Login · Forgot)</title>
+  <style>
+    /* Reset & base */
+    :root{
+      --bg:#0f1724;
+      --card:#0b1220;
+      --accent:#00c2ff;
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.04);
+      --success:#22c55e;
+      --danger:#ef4444;
+      --shadow: 0 8px 30px rgba(2,6,23,0.7);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(600px 400px at 10% 10%, rgba(0,194,255,0.06), transparent 10%),
+        radial-gradient(500px 350px at 90% 90%, rgba(34,197,94,0.03), transparent 10%),
+        var(--bg);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      gap:24px;
+    }
+
+    /* container */
+    .wrap{
+      width:100%;
+      max-width:980px;
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap:28px;
+      align-items:center;
+    }
+
+    /* brand panel */
+    .brand {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .brand .logo {
+      display:flex;
+      gap:14px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .logo .mark {
+      width:56px;height:56px;border-radius:10px;
+      background: linear-gradient(135deg,var(--accent), #7efcff 60%);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;color:#022; font-size:20px; box-shadow: 0 6px 20px rgba(0,194,255,0.12) inset;
+    }
+    .brand h1{margin:0;font-size:20px;letter-spacing:0.3px}
+    .brand p{color:var(--muted);margin-top:8px;line-height:1.4}
+
+    /* network motif */
+    .nets {
+      position:absolute; right:-40px; top:-40px; transform:rotate(22deg);
+      width:260px; height:260px; opacity:0.06; filter: blur(0.5px);
+      background:
+        linear-gradient(90deg,transparent 30%, rgba(255,255,255,0.06)),
+        conic-gradient(from 200deg,#0000, #00c2ff44 20%, #22c55e33 40%, #0000 60%);
+      border-radius:20px;
+      animation: drift 10s linear infinite;
+    }
+    @keyframes drift{ 0%{transform:rotate(22deg) translateY(0)} 50%{transform:rotate(22deg) translateY(6px)} 100%{transform:rotate(22deg) translateY(0)} }
+
+    /* card (auth forms) */
+    .card{
+      background: linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:26px;
+      box-shadow:var(--shadow);
+      min-height:420px;
+      position:relative;
+    }
+
+    /* tabs */
+    .tabs{
+      display:flex; gap:8px; margin-bottom:18px;
+    }
+    .tab-btn{
+      border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:600;
+      background:transparent; border:1px solid transparent;color:var(--muted);
+      transition: all .18s ease;
+    }
+    .tab-btn.active{
+      color:#012;
+      background:linear-gradient(90deg,var(--accent), #7efcff 60%);
+      box-shadow: 0 6px 20px rgba(2,6,23,0.35);
+    }
+
+    form{display:flex;flex-direction:column; gap:12px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input[type="text"], input[type="email"], input[type="password"]{
+      width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.04);
+      background:var(--glass); color:inherit; outline:none; transition:box-shadow .15s, border-color .15s;
+      font-size:14px;
+    }
+    input:focus{box-shadow:0 6px 18px rgba(0,0,0,0.5); border-color:rgba(255,255,255,0.06)}
+
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+
+    .hint{font-size:13px;color:var(--muted)}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:8px; padding:10px 14px; border-radius:12px; cursor:pointer; border:0;
+      font-weight:700; letter-spacing:0.2px;
+      background:linear-gradient(90deg,var(--accent), #7efcff 60%); color:#012;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.45);
+      transition: transform .13s ease;
+    }
+    .btn:active{transform:translateY(1px)}
+    .ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); box-shadow:none; font-weight:600}
+
+    .muted-link{color:var(--muted); font-size:13px; cursor:pointer; text-decoration:underline dotted; background:transparent; border:0}
+
+    .msg{font-size:13px;padding:10px;border-radius:10px;color:#052; background:rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.08)}
+    .err{background: rgba(239,68,68,0.06); color:#fee; border:1px solid rgba(239,68,68,0.08)}
+
+    /* subtle entrance animation */
+    .animate-fade{ animation:fadeInUp .5s ease both }
+    @keyframes fadeInUp{ from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none} }
+
+    /* small screens */
+    @media (max-width:880px){
+      .wrap{grid-template-columns:1fr; padding:20px}
+      .brand{order:2}
+    }
+
+    footer.small{
+      text-align:center;color:var(--muted);font-size:13px;margin-top:10px
+    }
+
+    /* micro network-style underline */
+    .brand .tag {
+      display:inline-flex; gap:8px; margin-top:12px; align-items:center; color:var(--muted);
+      font-size:13px;
+    }
+    .dot {
+      width:8px;height:8px;border-radius:50%;
+      background:linear-gradient(180deg,var(--accent), #22c55e);
+      box-shadow:0 6px 20px rgba(0,194,255,0.12);
+    }
+
+    /* small util */
+    .small{font-size:13px;color:var(--muted)}
+    .center{display:flex;align-items:center;gap:12px}
+    .token {
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+      padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.2);font-size:13px;color:var(--muted);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- left: brand -->
+    <div class="brand animate-fade" aria-hidden="true">
+      <div class="loo">
+        <div class="mark"> <img src="img2.png" width="45" alt=""></div>
+        <div>
+          <h1>Stackly</h1>
+          <div class="small">Network & Data Communication</div>
+        </div>
+      </div>
+      <p>Clean, minimal authentication pages for a network & data communication site — lightweight animations, accessible forms, and a simulated client-side reset flow for prototyping.</p>
+
+      <div class="tag"><div class="dot"></div> Connected · Secure · Fast</div>
+
+      <div class="nets" aria-hidden="true"></div>
+
+      <div style="margin-top:18px" class="small">
+        Demo notes:
+        <ul style="margin:8px 0 0 18px; padding:0; color:var(--muted)">
+          <li>Data stored in browser (localStorage) — for demo only.</li>
+          <li>Password reset is simulated (no email) — a reset token is shown for convenience.</li>
+        </ul>
+      </div>
+      <div class="small" style="margin-top:14px">© Stackly • Built for LOVE</div>
+    </div>
+
+    <!-- right: card -->
+    <div class="card animate-fade" role="main" aria-live="polite">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;flex-direction:column">
+          <div class="tabs" role="tablist" aria-label="Auth tabs">
+            <button class="tab-btn active" id="tab-login" role="tab" aria-selected="true">Login</button>
+            <button class="tab-btn" id="tab-signup" role="tab" aria-selected="false">Signup</button>
+            <button class="tab-btn" id="tab-forgot" role="tab" aria-selected="false">Forgot</button>
+          </div>
+          <div class="small" id="subtitle">Welcome back — log in to continue to Stackly.</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12px;color:var(--muted)">Prototype</div>
+          <div style="font-size:12px;color:var(--muted)">v1.0</div>
+        </div>
+      </div>
+
+      <!-- forms -->
+      <div id="forms-area" style="margin-top:16px">
+        <!-- LOGIN -->
+        <form id="form-login" class="animate-fade" aria-hidden="false">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" placeholder="you@stackly.io" required>
+
+          <label for="login-pass">Password</label>
+          <input id="login-pass" type="password" placeholder="••••••••" required>
+
+          <div class="row" style="align-items:center; margin-top:6px">
+            <div class="col">
+              <button type="button" class="ghost muted-link" id="to-forgot">Forgot password?</button>
+            </div>
+            <div>
+              <button class="btn" id="btn-login" type="submit">Log in</button>
+            </div>
+          </div>
+
+          <div id="login-msg" style="margin-top:10px"></div>
+
+          <div style="margin-top:14px" class="small">Or sign in with</div>
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <button class="ghost" type="button" title="SAML / SSO (demo)">SSO</button>
+            <button class="ghost" type="button" title="OAuth (demo)">OAuth</button>
+          </div>
+        </form>
+
+        <!-- SIGNUP -->
+        <form id="form-signup" style="display:none" aria-hidden="true">
+          <label for="signup-name">Full name</label>
+          <input id="signup-name" type="text" placeholder="Jane Networker" required>
+
+          <label for="signup-email">Email</label>
+          <input id="signup-email" type="email" placeholder="you@stackly.io" required>
+
+          <div class="row">
+            <div class="col">
+              <label for="signup-pass">Password</label>
+              <input id="signup-pass" type="password" placeholder="Minimum 8 characters" required>
+            </div>
+            <div class="col">
+              <label for="signup-pass2">Confirm</label>
+              <input id="signup-pass2" type="password" placeholder="Confirm password" required>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:8px; align-items:center; margin-top:6px">
+            <input id="agree" type="checkbox" style="width:16px;height:16px" />
+            <label for="agree" class="small" style="margin:0">I agree to Stackly <u style="text-decoration:underline dotted">terms</u>.</label>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <button class="btn" id="btn-signup" type="submit">Create account</button>
+            <button class="ghost" type="button" id="cancel-signup">Cancel</button>
+          </div>
+
+          <div id="signup-msg" style="margin-top:10px"></div>
+
+        </form>
+
+        <!-- FORGOT -->
+        <form id="form-forgot" style="display:none" aria-hidden="true">
+          <label for="forgot-email">Enter your account email</label>
+          <input id="forgot-email" type="email" placeholder="you@stackly.io" required>
+
+          <div style="display:flex; gap:8px; margin-top:8px">
+            <button class="btn" id="btn-forgot" type="submit">Send reset (sim)</button>
+            <button class="ghost" type="button" id="back-to-login">Back</button>
+          </div>
+
+          <div id="forgot-msg" style="margin-top:12px"></div>
+        </form>
+      </div>
+
+      <div class="small footer small">Need help? Email <span style="color:var(--muted)">support@stackly.</span></div>
+    </div>
+  </div>
+
+  <script>
+    /* Simple tab switching & UI wiring */
+    const tabLogin = document.getElementById('tab-login');
+    const tabSignup = document.getElementById('tab-signup');
+    const tabForgot = document.getElementById('tab-forgot');
+
+    const formLogin = document.getElementById('form-login');
+    const formSignup = document.getElementById('form-signup');
+    const formForgot = document.getElementById('form-forgot');
+
+    const subtitle = document.getElementById('subtitle');
+
+    function activate(tab){
+      [tabLogin, tabSignup, tabForgot].forEach(b=>b.classList.remove('active'));
+      [formLogin, formSignup, formForgot].forEach(f=>f.style.display='none');
+      if(tab === 'login'){
+        tabLogin.classList.add('active');
+        formLogin.style.display='block';
+        formLogin.setAttribute('aria-hidden','false');
+        formSignup.setAttribute('aria-hidden','true');
+        formForgot.setAttribute('aria-hidden','true');
+        subtitle.textContent = 'Welcome back — log in to continue to Stackly.';
+      } else if(tab === 'signup'){
+        tabSignup.classList.add('active');
+        formSignup.style.display='block';
+        formSignup.setAttribute('aria-hidden','false');
+        formLogin.setAttribute('aria-hidden','true');
+        formForgot.setAttribute('aria-hidden','true');
+        subtitle.textContent = 'Create your Stackly account — quick and secure.';
+      } else {
+        tabForgot.classList.add('active');
+        formForgot.style.display='block';
+        formForgot.setAttribute('aria-hidden','false');
+        formLogin.setAttribute('aria-hidden','true');
+        formSignup.setAttribute('aria-hidden','true');
+        subtitle.textContent = 'Forgot your password? We will simulate a reset token for demo.';
+      }
+    }
+
+    tabLogin.addEventListener('click', ()=>activate('login'));
+    tabSignup.addEventListener('click', ()=>activate('signup'));
+    tabForgot.addEventListener('click', ()=>activate('forgot'));
+
+    // quick links inside forms
+    document.getElementById('to-forgot').addEventListener('click', ()=>activate('forgot'));
+    document.getElementById('back-to-login').addEventListener('click', ()=>activate('login'));
+    document.getElementById('cancel-signup').addEventListener('click', ()=>activate('login'));
+
+    /* --- Simple client-side user store (localStorage) ---
+       For real apps: replace with server APIs, hashed passwords, emails, etc.
+    */
+    const storageKey = 'stackly_users_v1';
+
+    function loadUsers(){
+      try {
+        return JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e){ return {}; }
+    }
+    function saveUsers(u){ localStorage.setItem(storageKey, JSON.stringify(u)); }
+
+    // Signup handler
+    document.getElementById('form-signup').addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim().toLowerCase();
+      const pass = document.getElementById('signup-pass').value;
+      const pass2 = document.getElementById('signup-pass2').value;
+      const agree = document.getElementById('agree').checked;
+      const msg = document.getElementById('signup-msg');
+
+      msg.textContent=''; msg.className='';
+
+      if(!name || !email || !pass){ msg.textContent='Please complete all fields.'; msg.className='err'; return; }
+      if(pass.length < 8){ msg.textContent='Password must be at least 8 characters.'; msg.className='err'; return; }
+      if(pass !== pass2){ msg.textContent='Passwords do not match.'; msg.className='err'; return; }
+      if(!agree){ msg.textContent='You must agree to the terms.'; msg.className='err'; return; }
+
+      const users = loadUsers();
+      if(users[email]){ msg.textContent='An account with that email already exists.'; msg.className='err'; return; }
+
+      // store user (plain text password here for demo only!)
+      users[email] = { name, email, password: pass, created: new Date().toISOString() };
+      saveUsers(users);
+
+      msg.textContent = 'Account created! You can now log in.';
+      msg.className = 'msg';
+      // pre-fill login
+      document.getElementById('login-email').value = email;
+      document.getElementById('signup-name').value = '';
+      document.getElementById('signup-email').value = '';
+      document.getElementById('signup-pass').value = '';
+      document.getElementById('signup-pass2').value = '';
+      document.getElementById('agree').checked = false;
+
+      setTimeout(()=>activate('login'), 900);
+    });
+
+    // Login handler
+    document.getElementById('form-login').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const pass = document.getElementById('login-pass').value;
+      const msg = document.getElementById('login-msg');
+      msg.textContent=''; msg.className='';
+
+      if(!email || !pass){ msg.textContent='Enter email and password.'; msg.className='err'; return; }
+
+      const users = loadUsers();
+      const user = users[email];
+      if(!user){ msg.textContent='No account found for that email.'; msg.className='err'; return; }
+      if(user.password !== pass){ msg.textContent='Incorrect password.'; msg.className='err'; return; }
+
+      msg.textContent = `Welcome back, ${user.name || 'user'} — login successful (demo).`;
+      msg.className = 'msg';
+
+      // Simulate redirect / authenticated state
+      setTimeout(()=> {
+        msg.textContent = 'Redirecting to Stackly dashboard (simulated)...';
+      }, 700);
+    });
+
+    // Forgot password (simulate email & token)
+    document.getElementById('form-forgot').addEventListener('submit', function(e){
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value.trim().toLowerCase();
+      const msg = document.getElementById('forgot-msg');
+      msg.textContent=''; msg.className='';
+
+      if(!email){ msg.textContent='Enter an email address.'; msg.className='err'; return; }
+
+      const users = loadUsers();
+      if(!users[email]){ msg.textContent='No account found for that email.'; msg.className='err'; return; }
+
+      // create a reset token (demo)
+      const token = Math.random().toString(36).slice(2,10).toUpperCase();
+      users[email].resetToken = token;
+      users[email].tokenCreated = new Date().toISOString();
+      saveUsers(users);
+
+      // show token & quick "reset" UI — in real life you'd email it.
+      msg.innerHTML = `<div class="small">A reset token has been generated (simulated). Use it below to set a new password.</div>
+                       <div style="margin-top:8px" class="center">
+                         <div class="token" aria-hidden="true">${token}</div>
+                         <button class="ghost" id="open-reset" style="margin-left:8px">Use token now</button>
+                       </div>`;
+      msg.className = '';
+
+      document.getElementById('open-reset').addEventListener('click', ()=>openReset(email));
+    });
+
+    // Open reset UI (modal-like simple prompt driven)
+    function openReset(email){
+      const users = loadUsers();
+      const u = users[email];
+      if(!u || !u.resetToken){ alert('No active reset token for this user.'); return; }
+
+      const askToken = prompt('Enter the reset token shown above (simulated):');
+      if(!askToken) return alert('Reset cancelled.');
+
+      if(askToken.trim().toUpperCase() !== u.resetToken){
+        return alert('Invalid token.');
+      }
+
+      const newPass = prompt('Enter new password (min 8 chars):');
+      if(!newPass || newPass.length < 8) return alert('Password too short or cancelled.');
+
+      // set new password
+      users[email].password = newPass;
+      delete users[email].resetToken;
+      delete users[email].tokenCreated;
+      saveUsers(users);
+
+      alert('Password updated! You can now log in with the new password.');
+      activate('login');
+      document.getElementById('login-email').value = email;
+    }
+
+    // small accessibility: enter to submit etc. (already default)
+
+    // Pre-seed an example account (optional) for demo convenience
+    (function seedExample(){
+      const users = loadUsers();
+      if(!users['demo@stackly.io']){
+        users['demo@stackly.io'] = {
+          name: 'Demo Admin',
+          email: 'demo@stackly.io',
+          password: 'DemoPass123',
+          created: new Date().toISOString()
+        };
+        saveUsers(users);
+      }
+    })();
+
+    // Initial view
+    activate('login');
+
+  </script>
+</body>
+</html>

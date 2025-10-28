@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network & Data Communication Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Network & Data Communication Chat</h1>
+
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will appear here -->
+        </div>
+
+        <input type="text" id="message" placeholder="Type a message..." autocomplete="off">
+        <button id="send-btn">Send</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<style>body {
+    font-family: Arial, sans-serif;
+    background-color: #a9cb58;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 400px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.chat-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+}
+
+.message {
+    padding: 8px 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.message.user {
+    background-color: #d1e7dd;
+    align-self: flex-end;
+}
+
+.message.bot {
+    background-color: #f8d7da;
+    align-self: flex-start;
+}
+
+#message {
+    width: 75%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#send-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0d6efd;
+    color: white;
+    cursor: pointer;
+}
+
+#send-btn:hover {
+    background-color: #084298;
+}
+</style>
+<script>const chatBox = document.getElementById('chat-box');
+const messageInput = document.getElementById('message');
+const sendBtn = document.getElementById('send-btn');
+
+// Simulate "server" response
+function botResponse(message) {
+    const responses = {
+        "hello": "Hi! Welcome to Network & Data Communication Chat!",
+        "project": "This project demonstrates basic network communication concepts.",
+        "how are you": "I'm just a simulation, but I'm functioning perfectly!",
+        "default": "Sorry, I didn't understand that. Try typing 'hello' or 'project'."
+    };
+
+    return responses[message.toLowerCase()] || responses["default"];
+}
+
+// Add message to chat box
+function addMessage(text, sender) {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message', sender);
+    messageElement.textContent = text;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Send user message
+sendBtn.addEventListener('click', () => {
+    const userMessage = messageInput.value.trim();
+    if(userMessage === "") return;
+
+    addMessage(userMessage, 'user');
+    messageInput.value = "";
+
+    // Simulate server/bot response after 500ms
+    setTimeout(() => {
+        const response = botResponse(userMessage);
+        addMessage(response, 'bot');
+    }, 500);
+});
+
+// Press Enter to send message
+messageInput.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') sendBtn.click();
+});
+</script>
