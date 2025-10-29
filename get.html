@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Pricing | Network & Data Communication</title>
+<style>
+  :root {
+    --bg-light: #f8fafc;
+    --text-light: #1e293b;
+    --card-light: #fff;
+    --bg-dark: #0f172a;
+    --text-dark: #f1f5f9;
+    --card-dark: #1e293b;
+    --accent: #0078ff;
+  }
+
+  body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    transition: 0.5s ease;
+  }
+
+  body.dark {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 60px;
+  }
+
+  .pricing-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+  }
+
+  .pricing-card {
+    border-radius: 18px;
+    background: var(--card-light);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 30px;
+    transition: all 0.4s ease;
+    transform: scale(1);
+    opacity: 0;
+  }
+
+  body.dark .pricing-card {
+    background: var(--card-dark);
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0, 120, 255, 0.3);
+  }
+
+  .plan-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .price {
+    font-size: 2rem;
+    color: var(--accent);
+    margin: 15px 0;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    margin: 8px 0;
+  }
+
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s ease;
+  }
+
+  button:hover {
+    background: #005bcc;
+  }
+
+  .toggle-mode {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+<body>
+
+<button class="toggle-mode">🌙 Dark Mode</button>
+<h1>Our Pricing Plans</h1>
+<div class="pricing-container" id="pricing"></div>
+
+<script>
+  const pricingData = [
+    {
+      name: "Basic",
+      price: "$19 / month",
+      features: ["1 GB Bandwidth", "Basic Support", "Single User"],
+    },
+    {
+      name: "Standard",
+      price: "$49 / month",
+      features: ["10 GB Bandwidth", "Priority Support", "5 Users"],
+    },
+    {
+      name: "Premium",
+      price: "$99 / month",
+      features: ["Unlimited Bandwidth", "24/7 Support", "Unlimited Users"],
+    },
+  ];
+
+  const container = document.getElementById("pricing");
+
+  // Create Pricing Cards Dynamically
+  pricingData.forEach((plan, index) => {
+    const card = document.createElement("div");
+    card.className = "pricing-card";
+    card.style.animation = `fadeInUp 0.6s ease ${index * 0.2}s forwards`;
+
+    const planName = document.createElement("h2");
+    planName.className = "plan-name";
+    planName.textContent = plan.name;
+
+    const price = document.createElement("p");
+    price.className = "price";
+    price.textContent = plan.price;
+
+    const ul = document.createElement("ul");
+    plan.features.forEach((feature) => {
+      const li = document.createElement("li");
+      li.textContent = feature;
+      ul.appendChild(li);
+    });
+
+    const btn = document.createElement("button");
+    btn.textContent = "Get Started";
+    btn.addEventListener("click", () => alert(`You selected the ${plan.name} Plan!`));
+
+    card.appendChild(planName);
+    card.appendChild(price);
+    card.appendChild(ul);
+    card.appendChild(btn);
+
+    container.appendChild(card);
+  });
+
+  // Dark/Light Mode Toggle
+  const toggleBtn = document.querySelector(".toggle-mode");
+  const body = document.body;
+
+  toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("dark");
+    toggleBtn.textContent = body.classList.contains("dark")
+      ? "☀️ Light Mode"
+      : "🌙 Dark Mode";
+  });
+</script>
+
+</body>
+</html>
