@@ -7,17 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <nav>
-           <div class="logo"> <img src="img2.png" width="43" alt="">Stackly</div>
-            <ul class="nav-links">
-                <!-- <li><a href="index.html">Home</a></li> -->
-                <!-- <li><a href="about.html">About Us</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="contact.html" class="active">Contact</a></li> -->
-            </ul>
-        </nav>
-    </header>
+    <header class="navbar">
+    <div class="logo-container">
+      <img src="img2.png" alt="Stackly Logo" class="logo-img">
+      <span class="logo-text">Stackly</span>
+    </div>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <!-- <a href="#">About</a> -->
+      <a href="projects.html">Projects</a>
+      <a href="piricing.html">Pricing</a>
+      <!-- <a href="#">Contact</a> -->
+      <a href="login.html" class="login-btn">Login</a>
+    </nav>
+
+    <div class="menu-icon" id="menuIcon">☰</div>
+  </header>
 
     <section class="contact-section">
         <div class="container">
@@ -91,31 +97,110 @@ body {
     color: #333;
 }
 
-header {
-    background: #5876a2;
-    padding: 15px 50px;
-    color: white;
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: #010106;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-header .logo {
-    font-size: 1.8em;
-    font-weight: bold;
+/* Logo + Company name side by side */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
-header nav ul {
-    list-style: none;
-    display: flex;
+.logo-img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  position: relative;
+  transition: 0.3s;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: #00d4ff;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Login button */
+.login-btn {
+  padding: 6px 15px;
+  background: #00d4ff;
+  border-radius: 20px;
+  color: #000;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #fff;
+  color: #00d4ff;
+}
+
+/* Mobile Menu Icon */
+.menu-icon {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* Responsive Menu */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: -100%;
+    background: #111;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
     gap: 20px;
-}
+    transition: 0.4s ease;
+  }
 
-header nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-}
+  .nav-links.active {
+    right: 0;
+  }
 
-header nav ul li a.active {
-    border-bottom: 2px solid #ffeb3b;
+  .menu-icon {
+    display: block;
+  }
 }
 
 .contact-section {
@@ -211,6 +296,7 @@ footer {
     border-radius: 10px;
     overflow: hidden;
 }
+
 </style>
 <script>// Form submission
 document.getElementById('contactForm').addEventListener('submit', function(e){
